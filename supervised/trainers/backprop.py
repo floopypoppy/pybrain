@@ -250,4 +250,4 @@ class BackpropTrainer(Trainer):
         # if verbose:
         #     print 'train-errors:', fListToString(trainingErrors, 6)
         #     print 'valid-errors:', fListToString(validationErrors, 6)
-        return trainingErrors, validationErrors
+        return trainingErrors, validationErrors, trainingData, validationData
