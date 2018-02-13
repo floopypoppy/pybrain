@@ -164,6 +164,30 @@ class BackpropTrainer(Trainer):
                    sorted(ponderatedErrors)[len(errors) / 2])
         return avgErr
                 
+    def outPut(self, dataset=None, verbose=False,
+                        return_targets=True):
+        """Return winner-takes-all classification output on a given dataset. 
+        
+        If no dataset is given, the dataset passed during Trainer 
+        initialization is used. If return_targets is set, also return 
+        corresponding target classes.
+        """
+        if dataset == None:
+            dataset = self.ds
+        dataset.reset()
+        out = []
+        targ = []
+        for seq in dataset._provideSequences():
+            self.module.reset()
+            for input, target in seq:
+                res = self.module.activate(input)
+                out.append(res) 
+                targ.append(target)
+        if return_targets:
+            return out, targ
+        else:
+            return out
+
     def testOnClassData(self, dataset=None, verbose=False,
                         return_targets=False):
         """Return winner-takes-all classification output on a given dataset. 
@@ -181,7 +205,7 @@ class BackpropTrainer(Trainer):
             self.module.reset()
             for input, target in seq:
                 res = self.module.activate(input)
-                out.append(argmax(res))
+                out.append(argmax(res)) # argmax: Returns the indices of the maximum values along an axis
                 targ.append(argmax(target))
         if return_targets:
             return out, targ
