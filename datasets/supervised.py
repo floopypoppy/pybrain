@@ -99,10 +99,12 @@ class SupervisedDataSet(DataSet):
             res += self.evaluateMSE(module.activate, **args)
         return res/averageOver
         
-    def splitWithProportion(self, proportion = 0.5):
+    def splitWithProportion(self, proportion = 0.5, leftIndices = None):
         """Produce two new datasets, the first one containing the fraction given
-        by `proportion` of the samples."""
-        leftIndices = sample(range(len(self)), int(len(self)*proportion))
+        by `proportion` of the samples.
+        If leftIndices is given, then 'proportion' is disabled."""
+        if leftIndices is None:
+            leftIndices = sample(range(len(self)), int(len(self)*proportion))
         leftDs = self.copy()
         leftDs.clear()
         rightDs = leftDs.copy()
@@ -113,6 +115,6 @@ class SupervisedDataSet(DataSet):
             else:
                 rightDs.addSample(*sp)
             index += 1
-        return leftDs, rightDs
+        return leftDs, rightDs, leftIndices
         
         

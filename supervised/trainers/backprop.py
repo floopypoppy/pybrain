@@ -209,7 +209,7 @@ class BackpropTrainer(Trainer):
             verbose = self.verbose
         # Split the dataset randomly: validationProportion of the samples for 
         # validation.
-        trainingData, validationData = (
+        trainingData, validationData, trainIndices = (
             dataset.splitWithProportion(1 - validationProportion))
         if not (len(trainingData) > 0 and len(validationData)):
             raise ValueError("Provided dataset too small to be split into training " + 
@@ -250,4 +250,4 @@ class BackpropTrainer(Trainer):
         # if verbose:
         #     print 'train-errors:', fListToString(trainingErrors, 6)
         #     print 'valid-errors:', fListToString(validationErrors, 6)
-        return trainingErrors, validationErrors
+        return trainingErrors, validationErrors, trainIndices
